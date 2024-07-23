@@ -23,4 +23,43 @@ class Trie {
             previous = current
         }
     }
+
+    fun search(prefix: String): List<String> {
+        val results = emptyList<String>().toMutableList()
+
+        val prefixLastNode = navigatePrefix(prefix)
+
+        if (prefixLastNode == null) {
+            return results
+        }
+
+        addResultNodes(prefix.dropLast(1), prefixLastNode, results)
+
+        return results
+    }
+
+    private fun navigatePrefix(prefix: String): TrieNode? {
+        var current: TrieNode? = root;
+
+        for (i in 0..prefix.length-1) {
+            val character = prefix.get(i).toString()
+            current = current?.children?.get(character)
+
+            if (current == null) {
+                return null
+            }
+        }
+
+        return current
+    }
+
+    private fun addResultNodes(word: String, currentNode: TrieNode, results: MutableList<String>) {
+        val updatedWord = word + currentNode.data
+
+        if (currentNode.isWord) {
+            results.add(updatedWord)
+        }
+
+        currentNode.children.forEach { _, node -> addResultNodes(updatedWord, node, results) }
+    }
 }

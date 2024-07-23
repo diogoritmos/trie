@@ -7,4 +7,6 @@ fun main() {
 
     trie.insert("som")
     trie.insert("sol")
+
+    trie.search("s")
 }
